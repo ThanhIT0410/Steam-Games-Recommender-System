@@ -1,0 +1,42 @@
+recommender: "ItemKNN"
+
+ItemKNN:
+  k: 25
+
+MF_logistic:
+  n_factors: 256 
+  learning_rate: 0.05
+  n_epochs: 35
+  reg_lambda: 5e-5
+  verbose: True
+
+MF_bpr:
+  n_factors: 256 
+  learning_rate: 0.01
+  n_epochs: 30
+  reg_lambda: 5e-5
+  batch_size: 2048
+  verbose: True
+
+MF_svm:
+  n_factors: 192 
+  learning_rate: 0.01
+  n_epochs: 30
+  reg_lambda: 5e-5
+  verbose: True
+
+MLP:
+  n_factors: 64 
+  learning_rate: 0.0001
+  n_epochs: 30
+  reg_lambda: 1e-4
+  batch_size: 2048
+  verbose: True
+
+ConvNCF:
+  n_factors: 64 
+  learning_rate: 0.0001
+  n_epochs: 35
+  reg_lambda: 1e-4
+  batch_size: 128
+  verbose: True
