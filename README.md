@@ -43,6 +43,6 @@ Download the dataset from the following link:
 
 Unzip the downloaded file.
 
-Place the extracted csv files into data/preprocess
+Place the extracted csv files into data/processed
 
 
