@@ -1,0 +1,57 @@
+recommender: "MF_logistic"
+
+ItemKNN:
+  evaluation_type: "Leave-one-last"
+  k: 40
+
+MF_logistic:
+  evaluation_type: "Leave-one-last"
+  n_factors: 256 
+  learning_rate: 0.01
+  n_epochs: 50
+  reg_lambda: 1e-4
+  verbose: True
+
+MF_bpr: 
+  evaluation_type: "Full-corpus"
+  n_factors: 256 
+  learning_rate: 0.001
+  n_epochs: 11
+  reg_lambda: 1e-4
+  batch_size: 2048
+  verbose: True
+
+MF_hinge_pointwise:
+  evaluation_type: "Full-corpus"
+  n_factors: 256 
+  learning_rate: 0.001
+  n_epochs: 45
+  reg_lambda: 1e-4
+  verbose: True
+
+MF_hinge_pairwise:
+  evaluation_type: "Full-corpus"
+  n_factors: 256 
+  learning_rate: 0.001
+  n_epochs: 50
+  reg_lambda: 5e-5
+  batch_size: 2048
+  verbose: True
+
+MLP:
+  evaluation_type: "Leave-one-last"
+  n_factors: 256
+  learning_rate: 0.00003
+  n_epochs: 50
+  reg_lambda: 1e-3
+  batch_size: 2048
+  verbose: True
+
+ConvNCF:
+  evaluation_type: "Leave-one-last"
+  n_factors: 64 
+  learning_rate: 0.00003
+  n_epochs: 50
+  reg_lambda: 1e-3
+  batch_size: 128
+  verbose: True
