@@ -1,0 +1,153 @@
+Test ngày 13/5/2025 với metric mới
+- itemknn
+k=25
+
+--- Classification Metrics ---
+Accuracy: 0.6796
+AUC: 0.6622
+
+--- Full Corpus Ranking Metrics ---
+Precision@5 (full-corpus): 0.0059
+Precision@10 (full-corpus): 0.0060
+Recall@5 (full-corpus): 0.0030
+Recall@10 (full-corpus): 0.0063
+NDCG@5 (full-corpus): 0.0062
+NDCG@10 (full-corpus): 0.0071
+HitRate@5 (full-corpus): 0.0268
+HitRate@10 (full-corpus): 0.0511
+
+--- Sampled Ranking Metrics ---
+NDCG@5 (sampled): 0.0935
+NDCG@10 (sampled): 0.1033
+HitRate@5 (sampled): 0.1056
+HitRate@10 (sampled): 0.1364
+
+
+- mf-logistic
+n_factors=192, learning_rate=0.05, n_epochs=35, reg_lambda = 5e-5
+
+--- Classification Metrics ---
+Accuracy: 0.6866
+AUC: 0.7115
+
+--- Full Corpus Ranking Metrics ---
+Precision@5 (full-corpus): 0.0020
+Precision@10 (full-corpus): 0.0024
+Recall@5 (full-corpus): 0.0012
+Recall@10 (full-corpus): 0.0030
+NDCG@5 (full-corpus): 0.0017
+NDCG@10 (full-corpus): 0.0025
+HitRate@5 (full-corpus): 0.0098
+HitRate@10 (full-corpus): 0.0234
+
+--- Sampled Ranking Metrics ---
+NDCG@5 (sampled): 0.0337
+NDCG@10 (sampled): 0.0504
+HitRate@5 (sampled): 0.0570
+HitRate@10 (sampled): 0.1092
+
+
+- mf-bpr
+n_factors=256, learning_rate=0.01, n_epochs=30, reg_lambda=5e-5, batch_size=2048
+
+--- Classification Metrics ---
+Accuracy: 0.6557
+AUC: 0.6527
+
+--- Full Corpus Ranking Metrics ---
+Precision@5 (full-corpus): 0.0042
+Precision@10 (full-corpus): 0.0055
+Recall@5 (full-corpus): 0.0025
+Recall@10 (full-corpus): 0.0054
+NDCG@5 (full-corpus): 0.0045
+NDCG@10 (full-corpus): 0.0062
+HitRate@5 (full-corpus): 0.0203
+HitRate@10 (full-corpus): 0.0505
+
+--- Sampled Ranking Metrics ---
+Precision@5 (sampled): 0.0878
+Precision@10 (sampled): 0.0898
+Recall@5 (sampled): 0.0532
+Recall@10 (sampled): 0.1078
+NDCG@5 (sampled): 0.0923
+NDCG@10 (sampled): 0.1088
+HitRate@5 (sampled): 0.3212
+HitRate@10 (sampled): 0.4905
+
+
+- mf-svm
+n_factors=192, learning_rate=0.01, n_epochs=30, reg_lambda=5e-5
+
+--- Classification Metrics ---
+Accuracy: 0.6821
+AUC: 0.6753
+
+--- Full Corpus Ranking Metrics ---
+Precision@5 (full-corpus): 0.0033
+Precision@10 (full-corpus): 0.0032
+Recall@5 (full-corpus): 0.0022
+Recall@10 (full-corpus): 0.0044
+NDCG@5 (full-corpus): 0.0036
+NDCG@10 (full-corpus): 0.0042
+HitRate@5 (full-corpus): 0.0159
+HitRate@10 (full-corpus): 0.0296
+
+--- Sampled Ranking Metrics ---
+NDCG@5 (sampled): 0.0335
+NDCG@10 (sampled): 0.0409
+HitRate@5 (sampled): 0.0427
+HitRate@10 (sampled): 0.0660
+
+
+- mlp
+n_factors=64, learning_rate=0.0001, n_epochs=30, reg_lambda=1e-4, layer=4, batch_size=2048
+
+--- Classification Metrics ---
+Accuracy: 0.6750
+AUC: 0.6769
+
+--- Full Corpus Ranking Metrics ---
+Precision@5 (full-corpus): 0.0137
+Precision@10 (full-corpus): 0.0168
+Recall@5 (full-corpus): 0.0064
+Recall@10 (full-corpus): 0.0179
+NDCG@5 (full-corpus): 0.0162
+NDCG@10 (full-corpus): 0.0201
+HitRate@5 (full-corpus): 0.0629
+HitRate@10 (full-corpus): 0.1417
+
+--- Sampled Ranking Metrics ---
+NDCG@5 (sampled): 0.0535
+NDCG@10 (sampled): 0.0732
+HitRate@5 (sampled): 0.0833
+HitRate@10 (sampled): 0.1447
+
+
+- outer-ncf
+n_factors=64, learning_rate=0.0001, n_epochs=35, reg_lambda = 1e-4, batch_size=128, full train
+
+--- Classification Metrics ---
+Accuracy: 0.6750
+AUC: 0.6105
+Evaluating ranking metrics on full corpus...
+
+--- Full Corpus Ranking Metrics ---
+Precision@5 (full-corpus): 0.0129
+Precision@10 (full-corpus): 0.0124
+Recall@5 (full-corpus): 0.0056
+Recall@10 (full-corpus): 0.0114
+NDCG@5 (full-corpus): 0.0127
+NDCG@10 (full-corpus): 0.0138
+HitRate@5 (full-corpus): 0.0599
+HitRate@10 (full-corpus): 0.1064
+Evaluating ranking metrics on sampled data...
+
+--- Sampled Ranking Metrics ---
+NDCG@5 (sampled): 0.0498
+NDCG@10 (sampled): 0.0665
+HitRate@5 (sampled): 0.0771
+HitRate@10 (sampled): 0.1292
+
+
+
+
