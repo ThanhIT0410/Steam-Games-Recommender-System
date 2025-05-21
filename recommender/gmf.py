@@ -13,7 +13,7 @@ torch.backends.cudnn.benchmark = False
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-class MLP:
+class GMF:
     def __init__(self, evaluation_type="Leave-one-last", n_factors=32, learning_rate=0.0001, n_epochs=30, reg_lambda=1e-4, batch_size=2048, verbose=True):
         self.evaluation_type = evaluation_type
 
@@ -81,7 +81,7 @@ class MLP:
 
             num_users = self.user_to_idx.__len__()
             num_games = self.game_to_idx.__len__()
-            self.model = self.MLPNet(self.n_factors, num_users, num_games).to(self.device)
+            self.model = self.GMF(self.n_factors, num_users, num_games).to(self.device)
             self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate, weight_decay=float(self.reg_lambda))
             def _init_weights(m):
                 if isinstance(m, torch.nn.Linear) or isinstance(m, torch.nn.Embedding):
@@ -120,7 +120,7 @@ class MLP:
 
                 if verbose:
                     val_loss = self.validate(train_set, validate_set)
-                    print(f"[MLP] Epoch {epoch+1}/{self.n_epochs}, Train loss: {loss.item():.6f}, {val_loss}")
+                    print(f"[GMF] Epoch {epoch+1}/{self.n_epochs}, Train loss: {loss.item():.6f}, {val_loss}")
                 
 
         train(train_set, verbose=self.verbose, validate_set=validate_set, tag="Train & Validate")
@@ -250,7 +250,7 @@ class MLP:
         n_users = len(model.user_to_idx)
         n_games = len(model.game_to_idx)
 
-        model.model = model.MLPNet(model.n_factors, n_users, n_games).to(device)
+        model.model = model.GMF(model.n_factors, n_users, n_games).to(device)
         model.model.load_state_dict(state['model_state_dict'])
         model.model.eval()
 
