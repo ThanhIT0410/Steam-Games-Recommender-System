@@ -1,31 +1,32 @@
-recommender: "MF_logistic"
+recommender: "MF_bpr"
 
 ItemKNN:
   evaluation_type: "Leave-one-last"
-  k: 40
+  k: 40           # Chốt
 
 MF_logistic:
-  evaluation_type: "Leave-one-last"
+  evaluation_type: "Full-corpus"
   n_factors: 256 
   learning_rate: 0.01
-  n_epochs: 50
+  n_epochs: 16    # Chốt
   reg_lambda: 1e-4
   verbose: True
 
 MF_bpr: 
   evaluation_type: "Full-corpus"
   n_factors: 256 
-  learning_rate: 0.001
-  n_epochs: 11
+  learning_rate: 0.0005
+  n_epochs: 10    # Chốt
   reg_lambda: 1e-4
   batch_size: 2048
+  n_negatives: 15
   verbose: True
 
 MF_hinge_pointwise:
   evaluation_type: "Full-corpus"
   n_factors: 256 
-  learning_rate: 0.001
-  n_epochs: 45
+  learning_rate: 0.005
+  n_epochs: 30    # Chốt
   reg_lambda: 1e-4
   verbose: True
 

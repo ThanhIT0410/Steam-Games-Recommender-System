@@ -91,7 +91,7 @@ class MF_logistic:
                     print(f"[MF-BCE] Epoch {epoch+1}/{self.n_epochs}, Train loss: {loss.item():.6f}, {val_loss}")
 
         train(train_set, verbose=self.verbose, validate_set=validate_set, tag="Train & Validate")
-        # train(all_train_data, tag="Retrain")
+        train(all_train_data, tag="Retrain")
 
     def predict(self, user_id, game_list):
         if user_id not in self.user_to_idx:

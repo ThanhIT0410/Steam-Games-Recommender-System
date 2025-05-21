@@ -9,7 +9,7 @@ random.seed(42)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class MF_bpr:
-    def __init__(self, evaluation_type, n_factors=256, learning_rate=0.01, n_epochs=30, reg_lambda=5e-5, batch_size=2048, verbose=True):
+    def __init__(self, evaluation_type, n_factors=256, learning_rate=0.01, n_epochs=30, reg_lambda=5e-5, batch_size=2048, n_negatives=10, verbose=True):
         self.evaluation_type = evaluation_type
 
         self.user_embedding = None
@@ -26,6 +26,7 @@ class MF_bpr:
         self.n_epochs = n_epochs
         self.reg_lambda = reg_lambda
         self.batch_size = batch_size
+        self.n_negatives = n_negatives
         self.verbose = verbose
 
     def _create_matrix(self, train_set: pd.DataFrame, fill_value=np.nan):
@@ -84,6 +85,7 @@ class MF_bpr:
                     user_neg_items[u].add(g)
 
             user_list = list(self.user_to_idx.keys())
+            game_list = set(self.game_to_idx.keys())
 
             for epoch in range(self.n_epochs):
                 total_loss = 0
@@ -96,15 +98,22 @@ class MF_bpr:
 
                     for u in batch_users:
                         pos_games = list(user_pos_items[u])
-                        neg_games = list(user_neg_items[u])
+                        explicit_negs = list(user_neg_items[u])
+                        played = user_pos_items[u].union(user_neg_items[u])
+                        implicit_negs = list(game_list - played)
 
-                        if not pos_games or not neg_games:
+                        if not pos_games:
                             continue
 
                         u_idx = self.user_to_idx[u]
                         for pos in pos_games:
                             pos_id = self.game_to_idx[pos]
-                            for neg in neg_games:
+                            n_exp = min(len(explicit_negs), self.n_negatives)
+                            sampled_explicit = random.sample(explicit_negs, n_exp) if n_exp > 0 else []
+                            n_imp = max(0, self.n_negatives - n_exp)
+                            sampled_implicit = random.sample(implicit_negs, n_imp) if n_imp > 0 else []
+                            all_negs = sampled_explicit + sampled_implicit
+                            for neg in all_negs:
                                 neg_id = self.game_to_idx[neg]
                                 user_idx.append(u_idx)
                                 pos_idx.append(pos_id)
@@ -140,7 +149,7 @@ class MF_bpr:
                     train_loss = total_loss / batch_count
                     print(f"[MF-BPR] Epoch {epoch+1}/{self.n_epochs}, Train loss: {train_loss:.6f}, {val_loss}")
 
-        # train(train_set, verbose=self.verbose, validate_set=validate_set, tag="Train & Validate")
+        train(train_set, verbose=self.verbose, validate_set=validate_set, tag="Train & Validate")
         train(all_train_data, tag="Retrain")
     
     def predict(self, user_id, game_list):
@@ -176,26 +185,39 @@ class MF_bpr:
             if u in self.user_to_idx and g in self.game_to_idx:
                 if label == 1:
                     user_pos_items[u].add(g)
-        
+
         for u, g, label in train_set[["user_id", "app_id", "is_recommended"]].values:
-            if label == 0:
-                user_neg_items[u].add(g)
-                
+            if u in self.user_to_idx and g in self.game_to_idx:
+                if label == 0:
+                    user_neg_items[u].add(g)
+
+        game_set = set(self.game_to_idx.keys())
         user_idx, pos_idx, neg_idx = [], [], []
 
         for u in user_pos_items:
-            if u not in user_neg_items or len(user_neg_items[u]) == 0:
-                continue
             uid = self.user_to_idx[u]
-            pos_ids = [self.game_to_idx[g] for g in user_pos_items[u]]
+            pos_games = list(user_pos_items[u])
+            explicit_negs = list(user_neg_items[u])
+            played = user_pos_items[u].union(user_neg_items[u])
+            implicit_negs = list(game_set - played)
 
-            for p in pos_ids:
-                sampled_negatives = random.sample(list(user_neg_items[u]), min(10, len(user_neg_items[u])))
-                neg_ids = [self.game_to_idx[g] for g in sampled_negatives]
-                for n in neg_ids:
+            if not pos_games:
+                continue
+
+            for pos in pos_games:
+                pid = self.game_to_idx[pos]
+
+                n_exp = min(len(explicit_negs),self.n_negatives)
+                sampled_explicit = random.sample(explicit_negs, n_exp) if n_exp > 0 else []
+                n_imp = max(0, self.n_negatives - n_exp)
+                sampled_implicit = random.sample(implicit_negs, n_imp) if len(implicit_negs) >= n_imp and n_imp > 0 else []
+
+                all_negs = sampled_explicit + sampled_implicit
+                for neg in all_negs:
+                    nid = self.game_to_idx[neg]
                     user_idx.append(uid)
-                    pos_idx.append(p)
-                    neg_idx.append(n)
+                    pos_idx.append(pid)
+                    neg_idx.append(nid)
 
         if not user_idx:
             return float("nan")
@@ -268,7 +290,8 @@ class MF_bpr:
             'learning_rate': self.learning_rate,
             'n_epochs': self.n_epochs,
             'reg_lambda': self.reg_lambda,
-            'batch_size': self.batch_size
+            'batch_size': self.batch_size,
+            'n_negatives': self.n_negatives
         }
         torch.save(state, path)
 
@@ -283,6 +306,7 @@ class MF_bpr:
             n_epochs=state['n_epochs'],
             reg_lambda=state['reg_lambda'],
             batch_size=state['batch_size'],
+            n_negatives=state['n_negatives'],
             verbose=False
         )
 
