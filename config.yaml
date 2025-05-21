@@ -22,21 +22,12 @@ MF_bpr:
   n_negatives: 15
   verbose: True
 
-MF_hinge_pointwise:
+MF_svm:
   evaluation_type: "Full-corpus"
   n_factors: 256 
   learning_rate: 0.005
   n_epochs: 30    # Chốt
   reg_lambda: 1e-4
-  verbose: True
-
-MF_hinge_pairwise:
-  evaluation_type: "Full-corpus"
-  n_factors: 256 
-  learning_rate: 0.001
-  n_epochs: 50
-  reg_lambda: 5e-5
-  batch_size: 2048
   verbose: True
 
 MLP:

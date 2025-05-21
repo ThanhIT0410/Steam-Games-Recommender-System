@@ -12,8 +12,7 @@ model_map = {
     "ItemKNN": recommender.ItemKNN,
     "MF_logistic": recommender.MF_logistic,
     "MF_bpr": recommender.MF_bpr,
-    "MF_hinge_pointwise": recommender.MF_hinge_pointwise,
-    "MF_hinge_pairwise": recommender.MF_hinge_pairwise,
+    "MF_svm": recommender.MF_svm,
     "MLP": recommender.MLP,
     "ConvNCF": recommender.ConvNCF,
 }

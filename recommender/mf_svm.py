@@ -8,7 +8,7 @@ from data_utils import split_data_leave_one_last
 random.seed(42)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-class MF_hinge_pointwise:
+class MF_svm:
     def __init__(self, evaluation_type, n_factors=192, learning_rate=0.01, n_epochs=30, reg_lambda=5e-5, verbose=True):
         self.evaluation_type = evaluation_type
 
@@ -88,9 +88,9 @@ class MF_hinge_pointwise:
 
                 if verbose:
                     val_loss = self.validate(train_set, validate_set)
-                    print(f"[MF-PointSVM] Epoch {epoch+1}/{self.n_epochs}, Train loss: {loss.item():.6f}, {val_loss}")        
+                    print(f"[MF-SVM] Epoch {epoch+1}/{self.n_epochs}, Train loss: {loss.item():.6f}, {val_loss}")        
 
-        # train(train_set, verbose=self.verbose, validate_set=validate_set, tag="Train & Validation")
+        train(train_set, verbose=self.verbose, validate_set=validate_set, tag="Train & Validation")
         train(all_train_data, tag="Retrain")
     
     def predict(self, user_id, game_list):
